@@ -127,7 +127,7 @@ jobs:
           app-id: ${{ vars.GH_APP_ID }}
           private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
           owner: eukarya-inc
-          repositories: homebrew-infradrift
+          repositories: homebrew-tap
 
       - name: Download macOS artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
@@ -205,7 +205,7 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          git clone "https://x-access-token:${GH_TOKEN}@github.com/eukarya-inc/homebrew-infradrift.git" tap
+          git clone "https://x-access-token:${GH_TOKEN}@github.com/eukarya-inc/homebrew-tap.git" tap
           mkdir -p tap/Formula
           cp infradrift.rb tap/Formula/infradrift.rb
           cd tap
