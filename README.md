@@ -6,6 +6,13 @@ Simple drift detection for IaC: run plans or parse plan output, identify unmanag
 
 ## Installation
 
+### Homebrew
+
+```bash
+brew tap eukarya-inc/tap
+brew install infradrift
+```
+
 ### From source
 
 ```bash
