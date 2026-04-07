@@ -5,7 +5,7 @@ use std::path::PathBuf;
 #[derive(Parser)]
 #[command(
     name = "infradrift",
-    version,
+    version = env!("INFRADRIFT_VERSION"),
     about = "Detect infrastructure drift from Terraform/OpenTofu plans"
 )]
 pub struct Cli {
