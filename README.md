@@ -270,6 +270,26 @@ Patterns use dot-separated paths with `*` as a single-segment wildcard:
 
 Sensitive attribute values are automatically masked as `(sensitive)`.
 
+## Shell completions
+
+Generate shell completions for tab-completion support:
+
+### Bash
+
+```bash
+# Add to ~/.bashrc
+eval "$(infradrift completions bash)"
+```
+
+### Zsh
+
+```bash
+# Add to ~/.zshrc (ensure the completions directory is in your fpath)
+infradrift completions zsh > "${fpath[1]}/_infradrift"
+```
+
+After adding, restart your shell or source the config file.
+
 ## CI/CD integration
 
 ### GitHub Actions example

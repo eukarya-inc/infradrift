@@ -5,7 +5,8 @@ mod filter;
 mod output;
 mod plan;
 
-use clap::Parser;
+use clap::{CommandFactory, Parser};
+use clap_complete::generate;
 use cli::{Cli, Command};
 use config::Config;
 use drift::detector::detect_drift;
@@ -22,6 +23,12 @@ fn main() {
 }
 
 fn run(cli: Cli) -> anyhow::Result<()> {
+    if let Command::Completions { shell } = cli.command {
+        let mut cmd = Cli::command();
+        generate(shell, &mut cmd, "infradrift", &mut std::io::stdout());
+        return Ok(());
+    }
+
     let (plan, common) = match cli.command {
         Command::Scan {
             dir,
@@ -32,6 +39,7 @@ fn run(cli: Cli) -> anyhow::Result<()> {
             let plan = plan::executor::execute_plan(&dir, tofu, &plan_args)?;
             (plan, common)
         }
+        Command::Completions { .. } => unreachable!(),
         Command::Parse {
             file,
             binary,
