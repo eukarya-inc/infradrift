@@ -1,0 +1,18 @@
+{
+  "format_version": "1.2",
+  "terraform_version": "1.5.7",
+  "resource_drift": [],
+  "resource_changes": [
+    {
+      "address": "aws_instance.web",
+      "type": "aws_instance",
+      "name": "web",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["no-op"],
+        "before": {"ami": "ami-123"},
+        "after": {"ami": "ami-123"}
+      }
+    }
+  ]
+}

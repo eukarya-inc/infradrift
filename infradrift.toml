@@ -1,0 +1,19 @@
+# Infradrift configuration file
+# Define ignore rules to filter out expected drift
+
+# Ignore Cloud Run deployment-related attribute changes
+# This matches the common pattern where deployments via gcloud/GitHub Actions
+# cause expected drift on client, image, revision, and traffic attributes.
+[[ignore]]
+resource_types = ["google_cloud_run_v2_service", "google_cloud_run_v2_job"]
+actions = ["update"]
+attributes = [
+  "client",
+  "client_version",
+  "template.*.containers.*.image",
+  "template.*.containers.*.name",
+  "template.*.revision",
+  "traffic.*.revision",
+  "traffic.*.type",
+]
+mode = "all"

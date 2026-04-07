@@ -1,0 +1,119 @@
+{
+  "format_version": "1.2",
+  "terraform_version": "1.5.7",
+  "resource_drift": [
+    {
+      "address": "google_cloud_run_v2_service.api",
+      "type": "google_cloud_run_v2_service",
+      "name": "api",
+      "provider_name": "registry.terraform.io/hashicorp/google",
+      "change": {
+        "actions": ["update"],
+        "before": {
+          "client": "gcloud",
+          "client_version": "450.0.0",
+          "template": [
+            {
+              "containers": [
+                {
+                  "image": "gcr.io/project/api:v1.0.0",
+                  "name": "api-container"
+                }
+              ],
+              "revision": "api-00001"
+            }
+          ],
+          "traffic": [
+            {
+              "revision": "api-00001",
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ]
+        },
+        "after": {
+          "client": "terraform",
+          "client_version": "1.5.7",
+          "template": [
+            {
+              "containers": [
+                {
+                  "image": "gcr.io/project/api:v2.0.0",
+                  "name": "api-container-new"
+                }
+              ],
+              "revision": "api-00002"
+            }
+          ],
+          "traffic": [
+            {
+              "revision": "api-00002",
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ]
+        }
+      }
+    },
+    {
+      "address": "aws_instance.web",
+      "type": "aws_instance",
+      "name": "web",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["update"],
+        "before": {
+          "ami": "ami-0123456789abcdef0",
+          "instance_type": "t3.micro",
+          "tags": {
+            "Name": "web-server",
+            "Environment": "staging"
+          }
+        },
+        "after": {
+          "ami": "ami-0123456789abcdef0",
+          "instance_type": "t3.small",
+          "tags": {
+            "Name": "web-server-modified",
+            "Environment": "production"
+          }
+        }
+      }
+    },
+    {
+      "address": "module.vpc.aws_subnet.private",
+      "module_address": "module.vpc",
+      "type": "aws_subnet",
+      "name": "private",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["update"],
+        "before": {
+          "cidr_block": "10.0.1.0/24",
+          "tags": {
+            "Name": "private-subnet"
+          }
+        },
+        "after": {
+          "cidr_block": "10.0.2.0/24",
+          "tags": {
+            "Name": "private-subnet-v2"
+          }
+        }
+      }
+    }
+  ],
+  "resource_changes": [
+    {
+      "address": "aws_s3_bucket.logs",
+      "type": "aws_s3_bucket",
+      "name": "logs",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["no-op"],
+        "before": {},
+        "after": {}
+      }
+    }
+  ]
+}
