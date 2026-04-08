@@ -1,0 +1,4 @@
+interface:
+  display_name: "infradrift"
+  short_description: "Detect and analyze Terraform/OpenTofu infrastructure drift"
+  default_prompt: "Use $infradrift to scan for infrastructure drift, parse plan files, and help triage findings using ignore rules and filters."
