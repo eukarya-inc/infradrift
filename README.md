@@ -323,4 +323,4 @@ After adding, restart your shell or source the config file.
 
 ## License
 
-MIT
+[MIT](https://github.com/eukarya-inc/infradrift/blob/main/LICENSE)
