@@ -11,6 +11,7 @@ use cli::{Cli, Command};
 use config::Config;
 use drift::detector::detect_drift;
 use filter::engine::Filters;
+use std::path::Path;
 use std::process;
 
 fn main() {
@@ -29,6 +30,10 @@ fn run(cli: Cli) -> anyhow::Result<()> {
         return Ok(());
     }
 
+    if let Command::Validate { config } = &cli.command {
+        return run_validate(config);
+    }
+
     let (plan, common) = match cli.command {
         Command::Scan {
             dir,
@@ -39,7 +44,7 @@ fn run(cli: Cli) -> anyhow::Result<()> {
             let plan = plan::executor::execute_plan(&dir, tofu, &plan_args)?;
             (plan, common)
         }
-        Command::Completions { .. } => unreachable!(),
+        Command::Completions { .. } | Command::Validate { .. } => unreachable!(),
         Command::Parse {
             file,
             binary,
@@ -74,5 +79,29 @@ fn run(cli: Cli) -> anyhow::Result<()> {
         process::exit(0);
     } else {
         process::exit(1);
+    }
+}
+
+fn run_validate(config_path: &Path) -> anyhow::Result<()> {
+    match Config::load_and_validate(config_path) {
+        Ok(warnings) => {
+            if warnings.is_empty() {
+                println!("✓ {} is valid", config_path.display());
+            } else {
+                println!(
+                    "⚠ {} has {} warning(s):",
+                    config_path.display(),
+                    warnings.len()
+                );
+                for w in &warnings {
+                    println!("  - {}", w);
+                }
+            }
+            Ok(())
+        }
+        Err(e) => {
+            eprintln!("✗ {} is invalid: {:#}", config_path.display(), e);
+            process::exit(2);
+        }
     }
 }

@@ -33,6 +33,13 @@ pub enum Command {
         common: CommonArgs,
     },
 
+    /// Validate an infradrift.toml configuration file
+    Validate {
+        /// Path to config file to validate
+        #[arg(short, long, default_value = "infradrift.toml")]
+        config: PathBuf,
+    },
+
     /// Generate shell completions
     Completions {
         /// Shell to generate completions for

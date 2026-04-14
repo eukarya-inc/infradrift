@@ -59,6 +59,19 @@ infradrift parse --file tfplan --binary      # Force binary planfile mode
 infradrift parse --file tfplan --tofu        # Use OpenTofu for binary conversion
 ```
 
+### `validate` — Validate an infradrift.toml configuration file
+
+```bash
+infradrift validate                                  # Validate default infradrift.toml
+infradrift validate --config ./prod/infradrift.toml  # Validate a specific config file
+```
+
+Checks that the config file exists, is valid TOML, and reports warnings for:
+- Unknown action values (valid: `update`, `delete`, `create`, `replace`)
+- Malformed attribute patterns (empty, leading/trailing dots, empty segments)
+- `mode = "any"` without attributes (no effect)
+- Overly broad catch-all rules (no resource_types, actions, or attributes)
+
 ### `completions` — Generate shell completions
 
 ```bash

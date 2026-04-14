@@ -37,6 +37,9 @@ infradrift parse --file tfplan
 
 # Use OpenTofu instead of Terraform
 infradrift scan --tofu
+
+# Validate your config file
+infradrift validate
 ```
 
 ## Usage
@@ -61,6 +64,26 @@ infradrift scan --dir ./terraform/prod
 
 # Pass extra args to terraform plan
 infradrift scan -- -var-file=prod.tfvars -lock=false
+```
+
+#### `validate` - Validate an infradrift.toml configuration file
+
+```bash
+infradrift validate [OPTIONS]
+```
+
+| Option | Description |
+|--------|-------------|
+| `-c, --config <CONFIG>` | Path to config file to validate (default: `infradrift.toml`) |
+
+Checks that the config file exists, is valid TOML, and reports warnings for common issues such as unknown actions, malformed attribute patterns, or overly broad catch-all rules.
+
+```bash
+# Validate default config
+infradrift validate
+
+# Validate a specific config file
+infradrift validate --config ./terraform/prod/infradrift.toml
 ```
 
 #### `parse` - Parse an existing plan file and detect drift
