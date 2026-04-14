@@ -152,31 +152,32 @@ jobs:
           SHA_LINUX_X86=$(sha256sum artifacts/x86_64-unknown-linux-gnu/*.tar.gz | awk '{print $1}')
           SHA_LINUX_ARM=$(sha256sum artifacts/aarch64-unknown-linux-gnu/*.tar.gz | awk '{print $1}')
 
-          cat > infradrift.rb <<'FORMULA'
+          cat > infradrift.rb <<FORMULA
           class Infradrift < Formula
             desc "Detect infrastructure drift from Terraform/OpenTofu plans"
             homepage "https://github.com/eukarya-inc/infradrift"
+            version "${VERSION}"
             license "MIT"
 
             on_macos do
               if Hardware::CPU.intel?
-                url "https://github.com/REPO/releases/download/TAG/infradrift-TAG-x86_64-apple-darwin.tar.gz"
-                sha256 "SHA_MAC_X86"
+                url "https://github.com/${REPO}/releases/download/${TAG}/infradrift-${TAG}-x86_64-apple-darwin.tar.gz"
+                sha256 "${SHA_MAC_X86}"
               end
               if Hardware::CPU.arm?
-                url "https://github.com/REPO/releases/download/TAG/infradrift-TAG-aarch64-apple-darwin.tar.gz"
-                sha256 "SHA_MAC_ARM"
+                url "https://github.com/${REPO}/releases/download/${TAG}/infradrift-${TAG}-aarch64-apple-darwin.tar.gz"
+                sha256 "${SHA_MAC_ARM}"
               end
             end
 
             on_linux do
               if Hardware::CPU.intel?
-                url "https://github.com/REPO/releases/download/TAG/infradrift-TAG-x86_64-unknown-linux-gnu.tar.gz"
-                sha256 "SHA_LINUX_X86"
+                url "https://github.com/${REPO}/releases/download/${TAG}/infradrift-${TAG}-x86_64-unknown-linux-gnu.tar.gz"
+                sha256 "${SHA_LINUX_X86}"
               end
               if Hardware::CPU.arm?
-                url "https://github.com/REPO/releases/download/TAG/infradrift-TAG-aarch64-unknown-linux-gnu.tar.gz"
-                sha256 "SHA_LINUX_ARM"
+                url "https://github.com/${REPO}/releases/download/${TAG}/infradrift-${TAG}-aarch64-unknown-linux-gnu.tar.gz"
+                sha256 "${SHA_LINUX_ARM}"
               end
             end
 
@@ -190,14 +191,8 @@ jobs:
           end
           FORMULA
 
-          # Remove heredoc indentation and substitute placeholders
+          # Remove heredoc indentation
           sed -i 's/^          //' infradrift.rb
-          sed -i "s|REPO|${REPO}|g" infradrift.rb
-          sed -i "s|TAG|${TAG}|g" infradrift.rb
-          sed -i "s|SHA_MAC_X86|${SHA_MAC_X86}|g" infradrift.rb
-          sed -i "s|SHA_MAC_ARM|${SHA_MAC_ARM}|g" infradrift.rb
-          sed -i "s|SHA_LINUX_X86|${SHA_LINUX_X86}|g" infradrift.rb
-          sed -i "s|SHA_LINUX_ARM|${SHA_LINUX_ARM}|g" infradrift.rb
 
           cat infradrift.rb
 
