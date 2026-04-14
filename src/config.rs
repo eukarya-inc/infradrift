@@ -57,11 +57,9 @@ impl Config {
             bail!("config file not found: {}", path.display());
         }
 
-        let content =
-            std::fs::read_to_string(path).context("failed to read config file")?;
+        let content = std::fs::read_to_string(path).context("failed to read config file")?;
 
-        let config: Config = toml::from_str(&content)
-            .context("failed to parse TOML")?;
+        let config: Config = toml::from_str(&content).context("failed to parse TOML")?;
 
         Ok(config.validate())
     }
@@ -102,10 +100,7 @@ impl Config {
             // Validate attribute patterns
             for attr in &rule.attributes {
                 if attr.is_empty() {
-                    errors.push(format!(
-                        "ignore rule #{}: empty attribute pattern",
-                        idx
-                    ));
+                    errors.push(format!("ignore rule #{}: empty attribute pattern", idx));
                 } else if attr.starts_with('.') || attr.ends_with('.') {
                     errors.push(format!(
                         "ignore rule #{}: attribute pattern \"{}\" should not start or end with \".\"",
@@ -120,7 +115,10 @@ impl Config {
             }
 
             // Warn if rule has no attributes and mode is "all" (catches everything)
-            if rule.attributes.is_empty() && rule.resource_types.is_empty() && rule.actions.is_empty() {
+            if rule.attributes.is_empty()
+                && rule.resource_types.is_empty()
+                && rule.actions.is_empty()
+            {
                 errors.push(format!(
                     "ignore rule #{}: no resource_types, actions, or attributes specified (matches all drift — this will hide everything)",
                     idx
@@ -256,7 +254,9 @@ mod tests {
             }],
         };
         let warnings = config.validate();
-        assert!(warnings.iter().any(|w| w.contains("mode is \"any\" but no attributes")));
+        assert!(warnings
+            .iter()
+            .any(|w| w.contains("mode is \"any\" but no attributes")));
     }
 
     #[test]
