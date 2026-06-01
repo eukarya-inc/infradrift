@@ -200,7 +200,7 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          git clone "https://x-access-token:${GH_TOKEN}@github.com/eukarya-inc/homebrew-tap.git" tap # git-cascade: allow
+          git clone "https://x-access-token:${GH_TOKEN}@github.com/eukarya-inc/homebrew-tap.git" tap # git-cascade:allow
           mkdir -p tap/Formula
           cp infradrift.rb tap/Formula/infradrift.rb
           cd tap
